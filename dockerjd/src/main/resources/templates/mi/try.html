@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        body {
+            background-image: url(http://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/8ad4b31c8701a18b4c1c626c9a2f07082838fe1a.jpg);
+            background-repeat: no-repeat;
+            /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+            background-attachment: fixed;
+            /*此条属性必须设置否则可能无效*/
+            /* 让背景图基于容器大小伸缩 */
+            background-size: cover;
+            /* 设置背景颜色，背景图加载过程中会显示背景色 */
+            background-color: #CCCCCC;
+        }
+
+        #user_reg {
+            font-family: 微软雅黑;
+            font-size: 40px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        form {
+            width: 600px;
+            /*设置宽度，方便使其居中*/
+            /*margin: 40px auto auto auto;*/
+            /*上右下左*/
+            font-size: 25px;
+        }
+
+        input {
+            height: 30px;
+            width: 120px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        /*input标签下的属性选择器*/
+
+        input[type="submit"],
+        input[type="button"] {
+            height: 40px;
+            width: 130px;
+            margin-top: 5px;
+            margin-left: 6px;
+        }
+        input[type="text"]{
+            height: 25px;
+            width: 430px;
+        }
+/*文本特效*/
+        span {
+            color: #d9d9d9;
+            position: relative;
+            z-index: 1;
+        }
+
+        span::before {
+            content: "";
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #262626;
+            transform-origin: center right;
+            transform: scaleX(0);
+            transition: transform 0.1s linear;
+            /* 这里不要指明为 all */
+        }
+
+        span:hover {
+            cursor: pointer;
+        }
+
+        span:hover::before {
+            transform-origin: center left;
+            transform: scaleX(1);
+        }
+
+    </style>
+
+    <script language="javascript" th:inline="javascript">
+        function check(){
+            if(document.form1.a[0].checked==true){
+                document.form1.action="/encryption/caeser";
+            }
+            if (document.form1.a[1].checked==true){
+                document.form1.action="/encryption/caeser/encode";
+            }
+            if(document.form1.a[2].checked==true)
+                document.form1.action="/encryption/playfair"
+            if(document.form1.a[3].checked==true)
+                document.form1.action="/encryption/playfair/encode"
+            if(document.form1.a[4].checked==true)
+                document.form1.action="/encryption/hill"
+            if(document.form1.a[5].checked==true)
+                document.form1.action="/encryption/hill/encode"
+        }
+
+        // function check2(){
+        //     var userDom = document.getElementById("my");
+        //     var use =userDom.value ;
+        // }
+
+        function show() {
+            if(document.getElementById("div2").style.display=="none"){
+                document.getElementById("div2").style.display="inline";
+            }
+           else{
+                document.getElementById("div2").style.display="none";
+            }
+        // <div id="div1" style="display:block;">DIV 1</div>  block又是什么状态？？
+        }
+
+        function click1() {
+            document.getElementById("div3").style.display = "inline";
+            var ff = document.getElementById("div3");
+            if (document.form1.a[0].checked == true) {
+                ff.innerHTML = "<br/>介绍：<br/>凯撒加密，移动位置为3,支持中文加密";
+            }
+                if (document.form1.a[1].checked == true) {
+                    ff.innerHTML = "<br/>介绍：<br/>凯撒解密，移动位置为3,支持中文加密";
+                }
+                if (document.form1.a[2].checked == true)
+                    ff.innerHTML = "<br/>介绍：<br/>playfair加密，采用的构成5*5字母表的单词为pengyuxia，仅仅支持英文";
+                if (document.form1.a[3].checked == true)
+                    ff.innerHTML = "<br/>介绍：<br/>playfair解密，采用的构成5*5字母表的单词为pengyuxia，仅仅支持英文，注意，输入的密文肯定是偶数，如果想自己随意测试自己写的密文，请输入偶数位字符串";
+                if (document.form1.a[4].checked == true)
+                    ff.innerHTML = "<br/>介绍：<br/>hill加密，采用3*3矩阵，支持所有ascii码，长度任意的字符加密，其中，长度不是3的倍数的字符长度将自动补x";
+                if (document.form1.a[5].checked == true)
+                    ff.innerHTML = "<br/>介绍：<br/>hill解密，明文不是3的倍数的字符，最后将自动补x，直到为3的倍数";
+
+        }
+            function load() {
+                var a = [[${result}]];
+                if (a != null) {
+                    document.getElementById("div2").style.display = "inline";
+                } else {
+                    document.getElementById("div2").style.display = "none";
+                }
+            }
+
+    </script>
+</head>
+<body onload="load();">
+
+<form name="form1" method="post" action="" onSubmit="check();">
+    <table>
+        <tr>
+            <td><p></p></td>
+            <td></td>
+        </tr>
+    </table>
+    <div id="user_reg">古典加密</div><br/>
+    <input type="radio" name="a" on  onchange="click1();">---凯撒加密---
+<!--    只要一个绑定了，那么就都绑定了-->
+    <input type="radio" name="a" onchange="click1();">---凯撒解密---
+    <br>
+    <input type="radio" name="a" onchange="click1();">-playfair加密 -
+    <input type="radio" name="a" onchange="click1();">-playfair解密 -
+    <br>
+    <input type="radio" name="a" onchange="click1();">  ---hill加密----
+    <input type="radio" name="a" onchange="click1();"> ---hill解密---
+    <br/>
+    <br/>
+    <br/>
+    <span>明文/密文：</span><input id="my" type="text" name="front">
+    <br/>
+    <br/>
+    <div align="center">
+        <input name="" type="submit" value="提交">
+        <input name="display" type="button" value="显示结果" onclick="show();" >
+    </div>
+
+    <div id="div2" style="display:none;">
+    <p id="miwen" th:text="'结果：'+ ${result}" ></p>
+</div>
+    <div id="div3" style="display:inline;">
+        <p id="m">使用说明：<br/>选择加密（或者解密）方式，而后输入要加密或者解密的文本，点击执行即可获得密文（明文）</p>
+    </div>
+</form>
+
+</body>
+</html>

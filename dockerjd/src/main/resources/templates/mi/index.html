@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+        <title>hello</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<br/>
+<form action="/encryption/hill" role="form">
+    明文：<input type="text" name="plaintext"><br/>
+    <input type="submit" value="提  交">
+</form>
+<!--前端传参方式，通过name给属性命名和赋值，再通过action发送http请求（通过url来处理），而后mvc再返回一个
+数据处理了的页面，这个过程通过modelandview自动再默认的资源文件下查找。-->
+<!--/*@thymesVar id="caeserSecret" type="java"*/-->
+<p th:text="'密文：'+ ${caeserSecret}" >密文</p>
+
+</body>
+</html>
